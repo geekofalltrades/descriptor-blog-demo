@@ -42,6 +42,30 @@ class TestPiece(unittest.TestCase):
                     " {}".format(file)
                 )
 
+    def test_valid_strata(self):
+        """Pieces may be assigned strata in the 0-8 range."""
+        p = Piece(Black)
+        for stratum in range(9):
+            try:
+                p.stratum = stratum
+            except ValueError:
+                raise AssertionError(
+                    "Piece.stratum could not be assigned the value"
+                    " {}".format(stratum)
+                )
+
+    def test_valid_eras(self):
+        """Pieces may be assigned eras in the 0-8 range."""
+        p = Piece(Black)
+        for era in range(9):
+            try:
+                p.era = era
+            except ValueError:
+                raise AssertionError(
+                    "Piece.era could not be assigned the value"
+                    " {}".format(era)
+                )
+
     def test_invalid_ranks(self):
         """Pieces may not be assigned ranks outside the 0-8 range."""
         p = Piece(Black)
@@ -61,6 +85,26 @@ class TestPiece(unittest.TestCase):
 
         with self.assertRaises(ValueError):
             p.file = 9
+
+    def test_invalid_strata(self):
+        """Pieces may not be assigned strata outside the 0-8 range."""
+        p = Piece(Black)
+
+        with self.assertRaises(ValueError):
+            p.stratum = -1
+
+        with self.assertRaises(ValueError):
+            p.stratum = 9
+
+    def test_invalid_era(self):
+        """Pieces may not be assigned eras outside the 0-8 range."""
+        p = Piece(Black)
+
+        with self.assertRaises(ValueError):
+            p.era = -1
+
+        with self.assertRaises(ValueError):
+            p.era = 9
 
 
 if __name__ == '__main__':
