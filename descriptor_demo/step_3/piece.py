@@ -1,6 +1,4 @@
-"""Step 2: Using properties, we allow our chess piece to validate
-its rank and file values.
-"""
+"""Step 3: Add strata and era properties. Things are getting crowded."""
 
 Black = False
 White = True
