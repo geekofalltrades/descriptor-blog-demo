@@ -1,7 +1,8 @@
-"""Step 4: We write a descriptor that intuitively looks like a reusable
-property. It's actually not - there are caveats that we'll explore in
-step 5.
+"""Step 4: We modify our descriptor to use a WeakKeyDictionary, so that
+it can hold a different value for every Piece instance.
 """
+
+from weakref import WeakKeyDictionary
 
 Black = False
 White = True
@@ -10,25 +11,25 @@ White = True
 class BoundedValue(object):
     """A value constrained to the 0-8 range, inclusive."""
 
-    def __init__(self, value):
-        self.value = value
+    def __init__(self):
+        self.values = WeakKeyDictionary()
 
     def __get__(self, instance, owner):
-        return self.value
+        return self.values[instance]
 
     def __set__(self, instance, value):
         if value < 0 or value > 8:
             raise ValueError("value must be between 0 and 8, inclusive")
-        self.value = value
+        self.values[instance] = value
 
 
 class Piece(object):
     """A chess piece. Knows its color and location on the board."""
 
-    rank = BoundedValue(0)
-    file = BoundedValue(0)
-    stratum = BoundedValue(0)
-    era = BoundedValue(0)
+    rank = BoundedValue()
+    file = BoundedValue()
+    stratum = BoundedValue()
+    era = BoundedValue()
 
     def __init__(self, color, rank=0, file=0, stratum=0, era=0):
         self.color = color
