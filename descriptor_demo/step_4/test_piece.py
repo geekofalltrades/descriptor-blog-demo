@@ -1,5 +1,33 @@
 import unittest
-from piece import Piece, Black, White
+from piece import BoundedValue, Piece, Black, White
+
+
+class TestBoundedValue(unittest.TestCase):
+    class BoundedValueTestClass(object):
+        """A simple object with a BoundedValue for testing."""
+        value = BoundedValue(0)
+
+    def setUp(self):
+        self.obj = self.BoundedValueTestClass()
+
+    def test_valid_values(self):
+        """BoundedValue may be assigned values in the 0-8 range."""
+        for value in range(9):
+            try:
+                self.obj.value = value
+            except ValueError:
+                raise AssertionError(
+                    "self.obj.value could not be assigned the value"
+                    " {}".format(value)
+                )
+
+    def test_invalid_values(self):
+        """BoundedValue may not be assigned values outside the 0-8 range."""
+        with self.assertRaises(ValueError):
+            self.obj.value = -1
+
+        with self.assertRaises(ValueError):
+            self.obj.value = 9
 
 
 class TestPiece(unittest.TestCase):
@@ -17,6 +45,10 @@ class TestPiece(unittest.TestCase):
         self.assertTrue(p.color is Black)
         self.assertEqual(p.rank, 2)
         self.assertEqual(p.file, 4)
+
+    # All tests below this point are now redundant and can be removed -
+    # they're retesting BoundedValue. However, they're left in place to
+    # demonstrate that they still pass.
 
     def test_valid_ranks(self):
         """Pieces may be assigned ranks in the 0-8 range."""
