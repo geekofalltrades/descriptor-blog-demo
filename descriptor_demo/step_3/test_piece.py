@@ -96,7 +96,7 @@ class TestPiece(unittest.TestCase):
         with self.assertRaises(ValueError):
             p.stratum = 9
 
-    def test_invalid_era(self):
+    def test_invalid_eras(self):
         """Pieces may not be assigned eras outside the 0-8 range."""
         p = Piece(Black)
 
