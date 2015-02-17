@@ -1,5 +1,6 @@
-"""Step 2: Using properties, we allow our chess piece to validate
-its rank and file values.
+"""Step 4: We write a descriptor that intuitively looks like a reusable
+property. It's actually not - there are caveats that we'll explore in
+step 5.
 """
 
 Black = False
@@ -24,49 +25,14 @@ class BoundedValue(object):
 class Piece(object):
     """A chess piece. Knows its color and location on the board."""
 
+    rank = BoundedValue(0)
+    file = BoundedValue(0)
+    stratum = BoundedValue(0)
+    era = BoundedValue(0)
+
     def __init__(self, color, rank=0, file=0, stratum=0, era=0):
         self.color = color
         self.rank = rank
         self.file = file
         self.stratum = stratum
         self.era = era
-
-    @property
-    def rank(self):
-        return self._rank
-
-    @rank.setter
-    def rank(self, value):
-        if value < 0 or value > 8:
-            raise ValueError("rank must be a value between 0 and 8, inclusive")
-        self._rank = value
-
-    @property
-    def file(self):
-        return self._file
-
-    @file.setter
-    def file(self, value):
-        if value < 0 or value > 8:
-            raise ValueError("file must be a value between 0 and 8, inclusive")
-        self._file = value
-
-    @property
-    def stratum(self):
-        return self._stratum
-
-    @stratum.setter
-    def stratum(self, value):
-        if value < 0 or value > 8:
-            raise ValueError("stratum must be a value between 0 and 8, inclusive")
-        self._stratum = value
-
-    @property
-    def era(self):
-        return self._era
-
-    @era.setter
-    def era(self, value):
-        if value < 0 or value > 8:
-            raise ValueError("era must be a value between 0 and 8, inclusive")
-        self._era = value
