@@ -5,10 +5,20 @@ from piece import BoundedValue, Piece, Black, White
 class TestBoundedValue(unittest.TestCase):
     class BoundedValueTestClass(object):
         """A simple object with a BoundedValue for testing."""
-        value = BoundedValue(0)
+        value = BoundedValue()
 
     def setUp(self):
         self.obj = self.BoundedValueTestClass()
+
+    def test_multiple_instances(self):
+        """Multiple instances with the same descriptor have their
+        own values.
+        """
+        other = self.BoundedValueTestClass()
+        self.obj.value = 4
+        other.value = 2
+        self.assertEqual(self.obj.value, 4)
+        self.assertEqual(other.value, 2)
 
     def test_valid_values(self):
         """BoundedValue may be assigned values in the 0-8 range."""
