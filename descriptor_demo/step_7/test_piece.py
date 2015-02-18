@@ -3,41 +3,61 @@ from piece import bounded_value_factory, Piece, Black, White
 
 
 class TestBoundedValue(unittest.TestCase):
-    class BoundedValueTestClass(object):
+    class BoundedValueTestClassOne(object):
         """A simple object with a BoundedValue for testing."""
-        value = bounded_value_factory('_value')
+        value = bounded_value_factory('_value', 0, 8)
+
+    class BoundedValueTestClassTwo(object):
+        """A second test object with different bounds."""
+        value = bounded_value_factory('_value', -4, 4)
 
     def setUp(self):
-        self.obj = self.BoundedValueTestClass()
+        self.obj_one = self.BoundedValueTestClassOne()
+        self.obj_two = self.BoundedValueTestClassTwo()
 
     def test_multiple_instances(self):
         """Multiple instances with the same descriptor have their
         own values.
         """
-        other = self.BoundedValueTestClass()
-        self.obj.value = 4
+        other = self.BoundedValueTestClassOne()
+        self.obj_one.value = 4
         other.value = 2
-        self.assertEqual(self.obj.value, 4)
+        self.assertEqual(self.obj_one.value, 4)
         self.assertEqual(other.value, 2)
 
     def test_valid_values(self):
-        """BoundedValue may be assigned values in the 0-8 range."""
+        """BoundedValue may be assigned values in its range."""
         for value in range(9):
             try:
-                self.obj.value = value
+                self.obj_one.value = value
             except ValueError:
                 raise AssertionError(
-                    "self.obj.value could not be assigned the value"
+                    "self.obj_one.value could not be assigned the value"
+                    " {}".format(value)
+                )
+
+        for value in range(-4, 5):
+            try:
+                self.obj_two.value = value
+            except ValueError:
+                raise AssertionError(
+                    "self.obj_two.value could not be assigned the value"
                     " {}".format(value)
                 )
 
     def test_invalid_values(self):
-        """BoundedValue may not be assigned values outside the 0-8 range."""
+        """BoundedValue may not be assigned values outside its range."""
         with self.assertRaises(ValueError):
-            self.obj.value = -1
+            self.obj_one.value = -1
 
         with self.assertRaises(ValueError):
-            self.obj.value = 9
+            self.obj_one.value = 9
+
+        with self.assertRaises(ValueError):
+            self.obj_two.value = -5
+
+        with self.assertRaises(ValueError):
+            self.obj_two.value = 5
 
 
 class TestPiece(unittest.TestCase):
@@ -97,9 +117,9 @@ class TestPiece(unittest.TestCase):
                 )
 
     def test_valid_eras(self):
-        """Pieces may be assigned eras in the 0-8 range."""
+        """Pieces may be assigned eras in the -8-8 range."""
         p = Piece(Black)
-        for era in range(9):
+        for era in range(-8, 9):
             try:
                 p.era = era
             except ValueError:
@@ -139,11 +159,11 @@ class TestPiece(unittest.TestCase):
             p.stratum = 9
 
     def test_invalid_eras(self):
-        """Pieces may not be assigned eras outside the 0-8 range."""
+        """Pieces may not be assigned eras outside the -8-8 range."""
         p = Piece(Black)
 
         with self.assertRaises(ValueError):
-            p.era = -1
+            p.era = -9
 
         with self.assertRaises(ValueError):
             p.era = 9
