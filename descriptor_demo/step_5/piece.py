@@ -1,5 +1,9 @@
-"""Step 4: We modify our descriptor to use a WeakKeyDictionary, so that
+"""Step 5: We modify our descriptor to use a WeakKeyDictionary, so that
 it can hold a different value for every Piece instance.
+
+Credit for the WeakKeyDictionary method goes to Chris Beaumont in his
+article "Python Descriptors Demystified."
+http://nbviewer.ipython.org/gist/ChrisBeaumont/5758381/descriptor_writeup.ipynb
 """
 
 from weakref import WeakKeyDictionary
